@@ -1,40 +1,48 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.3.60'
-    id 'application'
-    id "com.pswidersk.python-plugin" version "2.4.0"
-    id "com.palantir.docker" version "0.35.0"
+    id 'com.bmuschko.docker-remote' version '3.1.5'
 }
-application {
-    mainClassName = 'pl.aetas.blog.dockerimage.MainKt'
-}
-
-jar {
-    manifest {
-        attributes 'Main-Class': 'pl.aetas.blog.dockerimage.MainKt'
-    }
-}
-
-group 'org.example'
-version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.20"
+    // Add any other project dependencies here
 }
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
 
 docker {
+    // Specify the Docker image name and tag
     name 'myapp'
-    tags 'latest'
+    tag 'latest'
+
+    // Set the Dockerfile location
     dockerfile file('Dockerfile')
+
+    // Set any additional build arguments (if needed)
+    buildArgs(['ARG_NAME': 'ARG_VALUE'])
+
+    // Specify any image labels
+    labels(['labelName': 'labelValue'])
+}
+
+// Define a task to build the Docker image
+task buildDockerImage(type: DockerBuildImage) {
+    dependsOn assemble
+    group = 'Docker'
+    description = 'Builds a Docker image from the Dockerfile'
+    inputDir sourceSets.main.output
+}
+
+// Define a task to push the Docker image (optional)
+task pushDockerImage(type: DockerPushImage) {
+    dependsOn buildDockerImage
+    group = 'Docker'
+    description = 'Pushes the Docker image to a registry'
+}
+
+// Define a task to remove the Docker image (optional)
+task removeDockerImage(type: DockerRemoveImage) {
+    group = 'Docker'
+    description = 'Removes the Docker image'
+    imageId = 'myapp:latest'
 }
