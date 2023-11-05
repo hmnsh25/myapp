@@ -1,48 +1,12 @@
 plugins {
-    id 'com.bmuschko.docker-remote-api' version '3.1.5'
+    id 'com.bmuschko.docker-remote-api' version '9.3.4'
 }
 
-repositories {
-    mavenCentral()
-}
+// Import task types
+import com.bmuschko.gradle.docker.tasks.image.*
 
-dependencies {
-    // Add any other project dependencies here
-}
-
-docker {
-    // Specify the Docker image name and tag
-    name 'myapp'
-    tag 'latest'
-
-    // Set the Dockerfile location
-    dockerfile file('Dockerfile')
-
-    // Set any additional build arguments (if needed)
-    buildArgs(['ARG_NAME': 'ARG_VALUE'])
-
-    // Specify any image labels
-    labels(['labelName': 'labelValue'])
-}
-
-// Define a task to build the Docker image
-task buildDockerImage(type: DockerBuildImage) {
-    dependsOn assemble
-    group = 'Docker'
-    description = 'Builds a Docker image from the Dockerfile'
-    inputDir sourceSets.main.output
-}
-
-// Define a task to push the Docker image (optional)
-task pushDockerImage(type: DockerPushImage) {
-    dependsOn buildDockerImage
-    group = 'Docker'
-    description = 'Pushes the Docker image to a registry'
-}
-
-// Define a task to remove the Docker image (optional)
-task removeDockerImage(type: DockerRemoveImage) {
-    group = 'Docker'
-    description = 'Removes the Docker image'
-    imageId = 'myapp:latest'
+// Use task types
+task buildimage(type: DockerBuildImage) {
+    inputDir = file('.')
+    images.add('myapp:latest')
 }
