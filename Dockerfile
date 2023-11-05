@@ -26,7 +26,7 @@ RUN curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py
 RUN python3.10 get-pip.py
 RUN python3.10 -m pip install --upgrade pip
 #RUN echo "streamlit" > requirements.txt
-COPY . .
+COPY . /tmp/
 
 RUN pip install streamlit
 ENTRYPOINT ["python3.10", "my-web-page.py"]
