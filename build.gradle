@@ -1,5 +1,5 @@
 plugins {
-    id 'com.bmuschko.docker-remote' version '3.1.5'
+    id 'com.bmuschko.docker-remote-api' version '3.1.5'
 }
 
 repositories {
