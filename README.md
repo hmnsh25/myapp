@@ -14,5 +14,5 @@
 
 ### Phase 3
 - [ ] create a small Highly available kubernetes cluster using terraform
-- [ ] add some gradle code to work with it (maybe create some java code to work with)
+- [x] add some gradle code to work with it (maybe create some java code to work with)
 - [ ] create gihub actions to trigger. so as soon as PR is merged, it triggers some builds into artifactory (CI)
