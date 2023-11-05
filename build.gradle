@@ -1,10 +1,40 @@
 plugins {
-    id "com.pswidersk.python-plugin" version "2.4.0"
+    id 'org.jetbrains.kotlin.jvm' version '1.3.60'
     id 'application'
+    id "com.pswidersk.python-plugin" version "2.4.0"
     id "com.palantir.docker" version "0.35.0"
 }
+application {
+    mainClassName = 'pl.aetas.blog.dockerimage.MainKt'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'pl.aetas.blog.dockerimage.MainKt'
+    }
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
 
 docker {
     name 'myapp'
+    tags 'latest'
     dockerfile file('Dockerfile')
 }
